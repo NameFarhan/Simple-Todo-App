@@ -1,20 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputPart from '../Components/InputPart';
 import NewTodo from '../Components/NewTodo';
 
 const Todo = () => {
+  const [openDialogue, setOpenDialogue] = useState(false);
+  const [todos, setTodos] = useState([]);
 
-    const handleNewTodo = () => {
-        
-    }
+  const handleNewTodo = () => {
+    setOpenDialogue(!openDialogue);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialogue(false);
+  };
+
+  const addTodo = (todo) => {
+    setTodos([...todos, todo]);
+    setOpenDialogue(false); // Close the dialog after adding the todo
+  };
+
+  const handleDeleteTodo = (newtodo) =>{
+    setTodos(todos.filter(todo => todo !== newtodo))
+  }
+
   return (
     <>
+
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='Wrapper'>
-        <div style={{ border: '1px solid black', width: '750px', height: '710px', position: 'relative' }} className='inner'>
+        <div style={{ width: '750px', height: '100vh', position: 'relative' }} className='inner'>
           <p style={{ fontSize: '26px', fontWeight: '500', color: '#252525', marginTop: '40px', display: 'flex', justifyContent: 'center' }}>TODO LIST</p>
 
-          {/* input part */}
+          {/* Input part */}
           <InputPart />
+
+<div style={{position:'relative',right:'34px'}}>
+            {todos.map((todo, index) => (
+              <>
+              <div style={{width:'525px',margin:' 30px auto',height:'26px'}} key={index}>
+                <div style={{display:'flex',alignItems:'center'}}>
+                  <input style={{width:'26px',height:'26px'}} type='checkbox'/>
+                <p style={{fontSize:'20px',marginLeft:'17px',fontWeight:'500'}}>{todo}</p>
+                <button onClick={() =>{
+handleDeleteTodo(todo)}
+                }
+                 style={{position:'fixed',left:'59.1%',width: '110px',
+          fontSize: '18px',
+          fontWeight: '500',
+          height: '38px',
+          cursor: 'pointer',
+          border: '1px solid #6C63FF',
+          color: '#6C63FF',
+          outline: 'none',
+          borderRadius: '5px',
+          background: '#fff'}}>
+            Delete
+          </button>
+                </div>
+              </div>
+              <hr style={{margin:'-2px auto',maxWidth:'69.5%'}}/>
+              </>
+            ))}
+            </div>
 
           <button className='add-todo-button' style={{
             border: 'none',
@@ -34,6 +80,25 @@ const Todo = () => {
           </button>
         </div>
       </div>
+
+      {openDialogue && (
+        <div className="dialog-overlay" onClick={handleCloseDialog} style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <NewTodo addTodo={addTodo} closeDialog={handleCloseDialog} />
+          </div>
+        </div>
+      )}
     </>
   );
 }
