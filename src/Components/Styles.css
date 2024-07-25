@@ -1,0 +1,14 @@
+
+
+/* styles.css or your main CSS file */
+
+.dark-theme {
+    background-color: black;
+    color: #fff;
+  }
+  
+  .light-theme {
+    background-color: #fff;
+    color: #252525;
+  }
+  
